@@ -6,11 +6,12 @@ const express = require('express')
 const sha1 = require('sha1')
 const { v4: uuidv4 } = require('uuid')
 const {google} = require('googleapis')
+require('dotenv').config()
 
 const app = express()
 const client = new Discord.Client()
 
-const secureData = (fs.existsSync(`./token.json`)) ? require('./token.json') : {
+const secureData = {
   "token": process.env.token,
   "guildID": process.env.guildID,
   "user": process.env.user,
@@ -20,10 +21,8 @@ const secureData = (fs.existsSync(`./token.json`)) ? require('./token.json') : {
   "accessToken": process.env.accessToken,
   "refreshToken": process.env.refreshToken,
   "url": process.env.URL,
+  "port": process.env.PORT || 3000
 }
-
-secureData.port = process.env.PORT || 3000
-secureData.url = secureData.URL || `localhost`
 
 const connection = mysql.createPool(process.env.CLEARDB_DATABASE_URL || {
   host: secureData.DBhost,
